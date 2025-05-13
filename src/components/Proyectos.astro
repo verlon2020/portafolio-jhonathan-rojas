@@ -1,0 +1,208 @@
+---
+// src/components/Proyectos.astro
+
+// Datos de tus proyectos
+const proyectos = [
+  {
+    titulo: "Paseadores de Perros",
+    descripcion: "Aplicación Movl para conectar dueños de mascotas con paseadores verificados. Ofrece flexibilidad horaria y perfiles confiables para el cuidado de mascotas.",
+    tecnologias: ["Expo", "React", "Node.js", "JavaScript", "CSS", "HTML", "Firebase"],
+    imagen: "/proyectos/paseadores-perros.jpg", // Asegúrate de tener esta imagen en public/proyectos/
+    demo: "#",
+    codigo: "https://github.com/verlon2020/Dog_Walkers"
+  },
+  {
+    titulo: "Hamburguesería Giron",
+    descripcion: "Sistema de gestión para hamburguesería con control de inventario, pedidos y administración de productos. Interfaz intuitiva para empleados y administradores.",
+    tecnologias: ["Java", "CSS", "HTML", "MySQL", "XAMPP", "SpringBoot"],
+    imagen: "/proyectos/hamburgueseria.jpg", // Asegúrate de tener esta imagen en public/proyectos/
+    demo: "#",
+    codigo: "https://github.com/verlon2020/Gironfood"
+  }
+];
+---
+
+<style>
+  .proyectos-section {
+    padding: 4rem 1rem;
+    background: var(--bg-section);
+  }
+  
+  .proyectos-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .proyectos-title {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 3rem;
+    color: var(--text-primary);
+    position: relative;
+  }
+  
+  .proyectos-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+  }
+  
+  .proyectos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+  
+  .proyecto-card {
+    background: var(--card-bg);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .proyecto-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .proyecto-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .proyecto-content {
+    padding: 1.5rem;
+  }
+  
+  .proyecto-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+  }
+  
+  .proyecto-desc {
+    margin-bottom: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+  
+  .proyecto-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .tech-tag {
+    background: var(--hover-lift);
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    color: var(--text-primary);
+  }
+  
+  .proyecto-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .proyecto-link {
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all var(--transition-speed);
+    display: inline-block;
+  }
+  
+  .link-demo {
+    background: linear-gradient(to right, var(--gradient-start), var(--gradient-mid));
+    color: #000;
+  }
+  
+  .link-code {
+    background: var(--hover-lift);
+    color: var(--text-primary);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .proyecto-link:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Estilo para cuando no carga la imagen */
+  .proyecto-img[src=""] {
+    display: none;
+  }
+  
+  .proyecto-img:not([src]) {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    .proyectos-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .proyectos-title {
+      font-size: 2rem;
+    }
+  }
+</style>
+
+<section class="proyectos-section">
+  <div class="proyectos-container">
+    <h2 class="proyectos-title">Proyectos Destacados</h2>
+    
+    <div class="proyectos-grid">
+      {proyectos.map((proyecto, index) => (
+        <div class="proyecto-card">
+          <!-- Imagen del proyecto con fallback -->
+          {proyecto.imagen ? (
+            <img 
+              src={proyecto.imagen} 
+              alt={`Captura del proyecto ${proyecto.titulo}`} 
+              class="proyecto-img"
+              onError={(e) => {
+                e.target.style.display = 'none';
+                const fallback = document.createElement('div');
+                fallback.className = 'img-fallback';
+                fallback.innerHTML = `<div style="height: 200px; background: var(--card-bg); display: flex; align-items: center; justify-content: center; color: var(--text-secondary);">Imagen no disponible</div>`;
+                e.target.parentNode.insertBefore(fallback, e.target.nextSibling);
+              }}
+            />
+          ) : (
+            <div class="img-fallback" style="height: 200px; background: var(--card-bg); display: flex; align-items: center; justify-content: center; color: var(--text-secondary);">
+              Imagen no disponible
+            </div>
+          )}
+          
+          <div class="proyecto-content">
+            <h3 class="proyecto-title">{proyecto.titulo}</h3>
+            <p class="proyecto-desc">{proyecto.descripcion}</p>
+            <div class="proyecto-tech">
+              {proyecto.tecnologias.map(tech => (
+                <span class="tech-tag">{tech}</span>
+              ))}
+            </div>
+            <div class="proyecto-links">
+            
+              <a href={proyecto.codigo} target="_blank" rel="noopener noreferrer" class="proyecto-link link-code">Ver Código</a>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
